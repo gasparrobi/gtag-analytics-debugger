@@ -1,0 +1,19 @@
+{
+  "name": "gtag-analytics-debugger",
+  "version": "1.0",
+  "description": "",
+  "permissions": ["webRequest", "<all_urls>", "activeTab", "storage"],
+  "content_scripts": [
+    {
+      "matches": ["https://*/*"],
+      "css": [],
+      "js": ["contentScript.js"]
+    }
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "web_accessible_resources": ["inject.js"],
+  "devtools_page": "devtools.html",
+  "manifest_version": 2
+}
