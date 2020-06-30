@@ -95,7 +95,7 @@ export default {
 }
 
 .gtag-item-list {
-  margin: 10px 0;
+  margin: 15px 0;
 }
 
 .accordion {
