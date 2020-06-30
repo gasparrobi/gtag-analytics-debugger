@@ -1,4 +1,5 @@
 // note: "inject.js" has to be added to web_accessible_resources in manifest.json
+
 window.addEventListener(
   'message',
   (event) => {
@@ -8,6 +9,9 @@ window.addEventListener(
     if (event.data.type === 'gtag-request') {
       const gtagData = window.dataLayer || null;
       sendGtagData(gtagData);
+    } else if (event.data.type === 'gtag-reset') {
+      window.dataLayer = [];
+      sendGtagData(window.dataLayer);
     }
   },
   false

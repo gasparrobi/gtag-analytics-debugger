@@ -8,6 +8,8 @@ s.onload = function () {
 chrome.runtime.onMessage.addListener(function (msg, _, sendResponse) {
   if (msg.type === 'gtag-bg') {
     window.postMessage({ type: 'gtag-request' }, '*');
+  } else if (msg.type === 'gtag-reset') {
+    window.postMessage({ type: 'gtag-reset' }, '*');
   }
 });
 
@@ -18,13 +20,11 @@ window.addEventListener(
     if (event.source != window) return;
     if (!event.data.type || !event.data.data) return;
 
-    const { type, data } = event.data;
+    const { type, data, gtagInfo } = event.data;
     if (type === 'gtag-data') {
-      chrome.storage.local.set({ gtagData: data }, function () {
-        chrome.runtime.sendMessage({
-          type: 'gtag-to-panel',
-          data
-        });
+      chrome.runtime.sendMessage({
+        type: 'gtag-to-panel',
+        data
       });
     }
   },

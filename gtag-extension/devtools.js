@@ -5,8 +5,5 @@ chrome.devtools.panels.create('GTAGdebugger', null, '/index.html', (panel) => {
 });
 
 const onPanelShown = () => {
-  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    lastTabId = tabs[0].id;
-    chrome.tabs.sendMessage(lastTabId, { type: 'gtag-bg' });
-  });
+  chrome.runtime.sendMessage({ type: 'panel-shown' });
 };
