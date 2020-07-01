@@ -22,19 +22,19 @@
 </template>
 
 <script>
-import browser from 'webextension-polyfill';
-import Card from './components/Card';
+import browser from "webextension-polyfill";
+import Card from "./components/Card";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    Card
+    Card,
   },
 
   data() {
     return {
       rawGtagData: [],
-      rawGtagGlobalData: []
+      rawGtagGlobalData: [],
     };
   },
 
@@ -44,19 +44,19 @@ export default {
 
   mounted() {
     browser.runtime.sendMessage({
-      type: 'app-opened',
-      tabId: browser.devtools.inspectedWindow.tabId
+      type: "app-opened",
+      tabId: browser.devtools.inspectedWindow.tabId,
     });
   },
 
   computed: {
     gtagData() {
       return this.rawGtagData
-        .filter((data) => data[0] && data[0] === 'event')
+        .filter((data) => data[0] && data[0] === "event")
         .map((data) => {
           return {
             event_action: data[1],
-            ...data[2]
+            ...data[2],
           };
         })
         .reverse();
@@ -72,34 +72,34 @@ export default {
         this.isObject(item)
       );
       return Object.assign(...objectList);
-    }
+    },
   },
 
   methods: {
     isObject(obj) {
-      return Object.prototype.toString.call(obj) === '[object Object]';
+      return Object.prototype.toString.call(obj) === "[object Object]";
     },
 
     reset() {
       browser.runtime.sendMessage({
-        type: 'app-reset',
-        tabId: browser.devtools.inspectedWindow.tabId
+        type: "app-reset",
+        tabId: browser.devtools.inspectedWindow.tabId,
       });
     },
 
     listeners(request) {
-      if (request.type === 'gtag-to-panel') {
+      if (request.type === "gtag-to-panel") {
         this.rawGtagData = JSON.parse(request.data) || [];
-      } else if (request.type === 'gtag-global-data') {
+      } else if (request.type === "gtag-global-data") {
         this.rawGtagGlobalData = JSON.parse(request.data || {});
-      } else if (request.type === 'panel-shown') {
+      } else if (request.type === "panel-shown") {
         browser.runtime.sendMessage({
-          type: 'app-opened',
-          tabId: browser.devtools.inspectedWindow.tabId
+          type: "app-opened",
+          tabId: browser.devtools.inspectedWindow.tabId,
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -108,8 +108,12 @@ export default {
   box-sizing: border-box;
 }
 
+body {
+  background-color: #fff;
+}
+
 #app {
-  font-family: 'Source Sans Pro' Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Source Sans Pro" Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
